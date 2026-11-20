@@ -1,0 +1,55 @@
+[build-system]
+requires = ["hatchling>=1.21"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agentproof"
+version = "1.0.0"
+description = "A protocol for AI coding agents: no evidence, no done."
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Adam (whoisthisadam)" }]
+requires-python = ">=3.10"
+dependencies = ["PyYAML>=6.0"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Environment :: Console",
+  "Topic :: Software Development :: Quality Assurance",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+agentproof = "agentproof.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/whoisthisadam/agentproof"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agentproof"]
+
+# Protocol files shipped inside the wheel so `agentproof init` works after pip install.
+[tool.hatch.build.targets.wheel.force-include]
+"PROTOCOL.md" = "agentproof/_assets/PROTOCOL.md"
+"AGENTS.md" = "agentproof/_assets/AGENTS.md"
+"CLAUDE.md" = "agentproof/_assets/CLAUDE.md"
+"docs" = "agentproof/_assets/docs"
+"templates" = "agentproof/_assets/templates"
+".claude/settings.json" = "agentproof/_assets/claude/settings.json"
+".claude/skills" = "agentproof/_assets/claude/skills"
+".claude/agents" = "agentproof/_assets/claude/agents"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]

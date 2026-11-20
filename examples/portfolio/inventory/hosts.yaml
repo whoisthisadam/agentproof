@@ -1,0 +1,52 @@
+# Host identity and intent only. Connection details live in ~/.ssh/config (see templates/ssh_config.example).
+# Changing who can log in to a host is a human-only action.
+
+hosts:
+  - alias: swarm-mgr-01
+    role: Docker Swarm manager (single node) for production stacks of Pulse, AutoDeal Bot, RentRadar, the Tunnelr control plane and monitoring
+    product: shared
+    environment: production
+    protected: true
+    fingerprint:
+      via: ssh
+      command: cat /etc/agentproof/host-id
+      expected: swarm-mgr-01
+    notes: >-
+      Production for four products: a mistake here affects all of them. Never run `docker system prune`,
+      `docker stack rm` or host-wide firewall changes. Volume `pulse_pgdata` holds the Pulse database.
+    facts:
+      os: {value: "Debian 12", how: measured, observed_at: 2026-09-09, source: TASK-20260909-01-pulse-postgres-16-migration}
+      docker: {value: "27.3", how: measured, observed_at: 2026-09-09, source: TASK-20260909-01-pulse-postgres-16-migration}
+      private_ip: {value: 192.0.2.10, how: measured, observed_at: 2026-09-09, source: TASK-20260909-01-pulse-postgres-16-migration}
+
+  - alias: build-runner-01
+    role: CI runner and single-node Swarm for staging and lab stacks
+    product: shared
+    environment: lab
+    protected: false
+    fingerprint:
+      via: ssh
+      command: cat /etc/agentproof/host-id
+      expected: build-runner-01
+    notes: >-
+      Rebuildable from tunnelr-infra/hosts/build-runner. Lab data only. Disk fills up with images: the CI job
+      prunes images older than 7 days, nothing else may prune.
+    facts:
+      os: {value: "Ubuntu 24.04", how: measured, observed_at: 2026-09-14, source: TASK-20260914-03-pulse-flaky-reminder-test}
+      timezone: {value: "UTC", how: measured, observed_at: 2026-09-14, source: TASK-20260914-03-pulse-flaky-reminder-test}
+      private_ip: {value: 192.0.2.30, how: measured, observed_at: 2026-09-14, source: TASK-20260914-03-pulse-flaky-reminder-test}
+
+  - alias: tunnelr-node-tor-01
+    role: WireGuard exit node, Toronto region
+    product: tunnelr
+    environment: production
+    protected: false
+    fingerprint:
+      via: ssh
+      command: cat /etc/agentproof/host-id
+      expected: tunnelr-node-tor-01
+    notes: >-
+      Carries customer VPN traffic. Drain with RB-02 before any restart of WireGuard or the host.
+    facts:
+      public_ip: {value: 203.0.113.41, how: measured, observed_at: 2026-09-21, source: TASK-20260921-01-tunnelr-add-node-toronto}
+      os: {value: "Debian 12", how: measured, observed_at: 2026-09-21, source: TASK-20260921-01-tunnelr-add-node-toronto}

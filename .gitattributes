@@ -1,0 +1,10 @@
+* text=auto
+
+# Files executed on Linux hosts must keep LF even when edited on Windows.
+# A CRLF shebang fails with "bad interpreter", which looks like a corrupt file.
+*.sh       text eol=lf
+*.yml      text eol=lf
+*.yaml     text eol=lf
+Dockerfile text eol=lf
+
+*.ps1      text eol=crlf

@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Secrets: names live in .env.example, values never live in the repo
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+*credentials*.json
+secrets/
+
+# Raw data pulled during a task: summarise it in evidence, never commit it
+/tasks/**/data/
+/examples/**/tasks/**/data/
+
+# Editors and OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Agent session artifacts that capture screen or page contents
+.playwright-mcp/
+.claude/settings.local.json
+
+# Crash dumps from Windows tools
+*.stackdump
+hs_err_pid*.log

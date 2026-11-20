@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/id_rsa*)",
+      "Read(**/id_ed25519*)",
+      "Read(**/*credentials*)",
+      "Read(~/.ssh/**)",
+      "Bash(cat .env*)",
+      "Bash(git push:*)",
+      "Bash(git remote add:*)",
+      "Bash(docker system prune:*)",
+      "Bash(docker stack rm:*)",
+      "Bash(iptables -F:*)"
+    ],
+    "allow": [
+      "Bash(agentproof validate:*)",
+      "Bash(agentproof ledger:*)",
+      "Bash(agentproof env-check:*)",
+      "Bash(agentproof fingerprint:*)",
+      "Bash(agentproof new-task:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)"
+    ]
+  }
+}

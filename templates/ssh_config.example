@@ -1,0 +1,33 @@
+# ~/.ssh/config: connection details live here, never in the repository.
+# The agent connects by alias only: `ssh tunnelr-node-tor-01 ...`
+
+Host *
+    IdentitiesOnly yes
+    StrictHostKeyChecking yes
+    ForwardAgent no
+    ServerAliveInterval 30
+
+# Bastion for the private network
+Host bastion-01
+    HostName 198.51.100.5
+    User <YOUR_USER>
+    IdentityFile <YOUR_SSH_KEY_PATH>
+
+# Lab hosts: the agent's lab key
+Host build-runner-01
+    HostName 192.0.2.30
+    User agent-lab
+    IdentityFile <YOUR_AGENT_LAB_KEY_PATH>
+    ProxyJump bastion-01
+
+# Production hosts: the agent's production key, loaded only for approved sessions
+Host swarm-mgr-01
+    HostName 192.0.2.10
+    User agent-prod
+    IdentityFile <YOUR_AGENT_PROD_KEY_PATH>
+    ProxyJump bastion-01
+
+Host tunnelr-node-tor-01
+    HostName 203.0.113.41
+    User agent-prod
+    IdentityFile <YOUR_AGENT_PROD_KEY_PATH>

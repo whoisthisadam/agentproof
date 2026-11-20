@@ -1,0 +1,18 @@
+# inventory/hosts.yaml: identity and intent only.
+# Never put users, ports, key paths, passwords or tokens here: those live in ~/.ssh/config.
+# `agentproof validate` rejects them.
+
+hosts:
+  - alias: <ssh alias, same as the Host entry in ~/.ssh/config>
+    role: <what it does>
+    product: <product or "shared">
+    environment: lab            # lab | staging | production
+    protected: false            # true: the agent never deletes or destructively changes it
+    fingerprint:
+      via: ssh                  # ssh: run on the host by alias | local: run on the workstation
+      command: cat /etc/agentproof/host-id
+      expected: <alias>
+    notes: >-
+      <anything a stranger needs: other tenants on this host, things never to touch>
+    facts:
+      os: {value: null, note: "not read yet"}
